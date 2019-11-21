@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<graph>
+  <edge distance="2">
+    <startNode>Kyiv</startNode>
+    <endNode>Kharkiv</endNode>
+  </edge>
+  <edge distance="3">
+    <startNode>Kyiv</startNode>
+    <endNode>Lviv</endNode>
+  </edge>
+  
+  <edge distance="4">
+    <startNode>Kharkiv</startNode>
+    <endNode>Copenhagen</endNode>
+  </edge>
+  <edge distance="2">
+    <startNode>Kharkiv</startNode>
+    <endNode>Berlin</endNode>
+  </edge>
+
+  <edge distance="1">
+    <startNode>Lviv</startNode>
+    <endNode>Tokyo</endNode>
+  </edge>
+  <edge distance="2">
+    <startNode>Berlin</startNode>
+    <endNode>Tokyo</endNode>
+  </edge>
+  <edge distance="1">
+    <startNode>Copenhagen</startNode>
+    <endNode>Tokyo</endNode>
+  </edge>
+</graph> 
