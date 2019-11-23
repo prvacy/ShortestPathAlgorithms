@@ -9,7 +9,7 @@ namespace Pathfinding.Algoritms
     {
         public static IEnumerable<IEdge<T>> FindShortestPath<T>(this IGraph<T> graph, IVertex<T> startVertex, IVertex<T> endVertex)
         {
-
+            
             foreach (Vertex<T> vertex in graph.Vertices)
             {
                 vertex.Distance = double.PositiveInfinity;
@@ -65,11 +65,8 @@ namespace Pathfinding.Algoritms
                 var tryNewDist = edge.Distance + node.Distance;
                 if (tryNewDist < endNode.Distance)
                 {
-                    lock (endNode)
-                    {
-                        endNode.Distance = tryNewDist;
-                        endNode.ShortestEdge = edge;
-                    }
+                    endNode.Distance = tryNewDist;
+                    endNode.ShortestEdge = edge;                  
                 }
             });
      

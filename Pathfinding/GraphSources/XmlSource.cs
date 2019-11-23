@@ -4,6 +4,7 @@ using System.Text;
 using Pathfinding.Models;
 
 using System.Xml;
+using System.Linq;
 
 namespace Pathfinding.GraphSources
 {
@@ -15,9 +16,10 @@ namespace Pathfinding.GraphSources
             xml.Load(path);
             var root = xml.DocumentElement;
 
-            var edges = new List<IEdge<string>>();
-            var vertices = new List<IVertex<string>>();
-            var vertNames = new HashSet<string>();
+            var graph = new Graph<string>(); 
+            var edges = graph.Edges;
+            var vertices = graph.Vertices;
+
 
             foreach (XmlNode node in root)
             {
@@ -32,15 +34,17 @@ namespace Pathfinding.GraphSources
 
                 void addVertex(out IVertex<string> vertex, string data)
                 {
-                    if (vertNames.Add(data))
+                    var vert = new Vertex<string>() { Data = data };
+                    if (vertices.Add(vert))
                     {
-                        vertex = new Vertex<string>() { Data = data };
-                        vertices.Add(vertex);
+                        vertex = vert; 
+
                     }
                     else
                     {
-                        vertex = vertices.Find(v => v.Data == data);
+                        vertex = vertices.Where(v => v.Data == data).First();//TODO: trygetvalue
                     }
+
                 }
 
                 addVertex(out firstV, first);
@@ -51,10 +55,9 @@ namespace Pathfinding.GraphSources
                 edges.Add(edge);
             }
 
-            var graph = new Graph<string>();
-            graph.Vertices = vertices;
-            graph.Edges = edges;
             return graph;
         }
+
+
     }
 }

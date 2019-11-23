@@ -23,8 +23,8 @@ namespace PathFindingTest
         [TestMethod]
         public void Check_StartVertex_HasNo_ShortestPath()
         {
-            var a = new VertexT<string>();
-            var b = new Vertex<string>();
+            var a = new VertexT<string>() { Data="a"};
+            var b = new Vertex<string>() { Data = "b"};
             var result = GenerateResult(a, b, new[] { new Edge<string>(), new Edge<string>() });
             Assert.IsNull(a.aShortest);
         }
@@ -32,16 +32,19 @@ namespace PathFindingTest
         [TestMethod]
         public void Is_FindedPath_Shortest()
         {
-            var a = new Vertex<string>();
-            var b = new Vertex<string>();
-            var ab = new Edge<string>();
-            var bd = new Edge<string>();
+            var a = new Vertex<string>() { Data = "a" };
+            var d = new Vertex<string>() { Data = "d" };
+
+            var ab = new Edge<string>() {  };
+            var bd = new Edge<string>() { };
             var expectedPath = new List<IEdge<string>> { ab, bd };
 
-            var actualPath = GenerateResult(a, b, expectedPath);
+            var actualPath = GenerateResult(a, d, expectedPath);
 
             CollectionAssert.AreEqual(expectedPath, actualPath.Reverse().ToList());
         }
+
+        //TODO: correct mistakes
 
         [TestMethod]
         public void Is_FindedPath_Shortest_Xml()
@@ -49,17 +52,22 @@ namespace PathFindingTest
             var path = @"../../../testGraph.xml";
             var graph = XmlSource.GetGraphFromXml(path);
 
-            var kyiv = graph.Vertices.Find(v => v.Data == "Kyiv");
-            var tokyo = graph.Vertices.Find(v => v.Data == "Tokyo");
+            IVertex<string> kyiv;
+            graph.Vertices.TryGetValue(new Vertex<string>() { Data = "Kyiv" }, out kyiv);//TODO: Write hashset Find or something like this
 
-            var lviv = graph.Vertices.Find(v => v.Data == "Lviv");
+            IVertex<string> tokyo;
+            graph.Vertices.TryGetValue(new Vertex<string>() { Data = "Tokyo" }, out tokyo);
 
-            
-            var expPath = new List<IEdge<string>>()
-            {
-                graph.Edges.Find(e => e.StartNode == kyiv && e.EndNode == lviv),
-                graph.Edges.Find(e => e.StartNode == lviv && e.EndNode == tokyo)
-            };
+            IVertex<string> lviv;
+            graph.Vertices.TryGetValue(new Vertex<string>() { Data = "Lviv" }, out lviv);
+
+
+            IEdge<string> kl;
+            graph.Edges.TryGetValue(new Edge<string>() { StartNode = kyiv, EndNode = lviv, Distance = 3 }, out kl);
+
+            IEdge<string> lt;
+            graph.Edges.TryGetValue(new Edge<string>() { StartNode = lviv, EndNode = tokyo, Distance = 1 }, out lt);
+            var expPath = new List<IEdge<string>>() { kl, lt };
 
             var actualPath = graph.FindShortestPath(kyiv, tokyo).Reverse().ToList();
             CollectionAssert.AreEqual(expPath, actualPath);
@@ -69,10 +77,14 @@ namespace PathFindingTest
         {
             var gr = new Graph<string>();
             //     b
-            var a = start;               //   ↗   ↘
-            var b = new Vertex<string>();// a       d
-            var c = new Vertex<string>();//   ↘   ↗       
-            var d = end;                 //     c
+            //   ↗   ↘
+            // a       d
+            //   ↘   ↗  
+            //     c
+            var a = start;               
+            var b = new Vertex<string>() { Data = "b"};
+            var c = new Vertex<string>() { Data = "c"};     
+            var d = end;                 
 
             //a -> b 1
             var ab = path.First();
@@ -98,8 +110,11 @@ namespace PathFindingTest
             cd.EndNode = d;
             cd.Distance = 1;
 
-            gr.Vertices.AddRange(new[] { a, b, c, d });
-            gr.Edges.AddRange(new[] { ab, ac, bd, cd });
+            var vertices = new HashSet<IVertex<string>>(new[] { a, b, c, d });
+            gr.Vertices = vertices;
+
+            var edges = new HashSet<IEdge<string>>(new[] { ab, ac, bd, cd });
+            gr.Edges = edges;
 
             var result = gr.FindShortestPath(a, d);
             return result;

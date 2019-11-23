@@ -6,8 +6,8 @@ namespace Pathfinding.Models
 {
     public interface IGraph<T>
     {
-        List<IVertex<T>> Vertices { get; set; }
-        List<IEdge<T>> Edges { get; set; }
+        HashSet<IVertex<T>> Vertices { get; set; }
+        HashSet<IEdge<T>> Edges { get; set; }
 
     }
 }

@@ -7,9 +7,9 @@ namespace Pathfinding.Models
 {
     public class Graph<T> : IGraph<T>
     {
-        public List<IVertex<T>> Vertices { get; set; } = new List<IVertex<T>>();
-        public List<IEdge<T>> Edges { get; set; } = new List<IEdge<T>>();
-
+        //TODO: write ctors
+        public HashSet<IVertex<T>> Vertices { get; set; } = new HashSet<IVertex<T>>();
+        public HashSet<IEdge<T>> Edges { get; set; } = new HashSet<IEdge<T>>();
 
     }
 
