@@ -26,8 +26,8 @@ var cd = new Edge<string>() { StartNode = c, EndNode = d, Distance = 4 };
 //a-c -> c-d
 
 var graph = new Graph<string>();
-graph.Vertices = new HashSet<IVertex<string>>(new[] { a, b, d });
-graph.Edges = new HashSet<IEdge<string>>(new[] { ab, bd });
+graph.Vertices = new HashSet<IVertex<string>>(new[] { a, b, c, d });
+graph.Edges = new HashSet<IEdge<string>>(new[] { ab, bd, ac, cd });
 ```
 ![Graph example](graph-example.png)
 ### Find shortest path for created graph:
