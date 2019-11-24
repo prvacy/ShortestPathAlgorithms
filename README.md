@@ -12,6 +12,7 @@ using Pathfinding.Algoritms; //Graph extensions
 ```C#
 var a = new Vertex<string>() { Data = "a" };
 var b = new Vertex<string>() { Data = "b" };
+var c = new Vertex<string>() { Data = "c" };
 var d = new Vertex<string>() { Data = "d" };
 
 var ab = new Edge<string>() { StartNode = a, EndNode = b, Distance = 1 };
