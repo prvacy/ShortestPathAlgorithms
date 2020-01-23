@@ -16,39 +16,51 @@ namespace Pathfinding.Algoritms
             }
             (startVertex as Vertex<T>).Distance = 0;
 
-            var nodesToParse = new List<IVertex<T>>() { startVertex };
+            var nodesToParse = new Queue<IVertex<T>>();
+            nodesToParse.Enqueue(startVertex as Vertex<T>);
 
 
-            for (int i = 0; i < nodesToParse.Count; i++)
+            while(nodesToParse.Count > 0)
             {
-                var node = nodesToParse[i] as Vertex<T>;
+                var node = nodesToParse.Dequeue() as Vertex<T>;
                 if (!node.IsParsed)
                 {
                     var edges = graph.Edges.Where(e => e.StartNode == node && !node.IsParsed);
-                    SetVertexShortestEdge(node, edges);
-                    nodesToParse.AddRange(edges.Select(e => e.EndNode));
+                    TrySetNewDistance(node, edges);
+                    foreach (var childNode in edges.Select(e => e.EndNode))
+                    {
+                        nodesToParse.Enqueue(childNode);
+                    }
+
                     node.IsParsed = true;
                 }
             }
 
-            var currNode = endVertex as Vertex<T>;
+            var lastNode = endVertex as Vertex<T>;
             var result = new List<IEdge<T>>();
-            while(currNode.ShortestEdge != null)
+            while(lastNode.ShortestEdge != null)
             {
-                var sEdge = currNode.ShortestEdge;
+                var sEdge = lastNode.ShortestEdge;
                 result.Add(sEdge);
-                currNode = sEdge.StartNode as Vertex<T>;
+                lastNode = sEdge.StartNode as Vertex<T>;
             }
 
+            result.Reverse();
             return result;
         }
 
-        private static void SetVertexShortestEdge<T>(Vertex<T> node, IEnumerable<IEdge<T>> edges)
+        /// <summary>
+        /// Try set new distance for <paramref name="nodeToParse"/> childs.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="nodeToParse">Node to parse.</param>
+        /// <param name="nodeEdges">Node child edges.</param>
+        private static void TrySetNewDistance<T>(Vertex<T> nodeToParse, IEnumerable<IEdge<T>> nodeEdges)
         {
-            foreach (Edge<T> edge in edges)
+            foreach (Edge<T> edge in nodeEdges)
             {
                 Vertex<T> endNode = edge.EndNode as Vertex<T>;
-                var tryNewDist = edge.Distance + node.Distance;
+                var tryNewDist = edge.Distance + nodeToParse.Distance;
                 if (tryNewDist < endNode.Distance)
                 {
                     endNode.Distance = tryNewDist;

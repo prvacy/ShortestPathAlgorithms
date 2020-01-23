@@ -5,7 +5,7 @@ using Pathfinding.Models;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PathFindingTest
+namespace PathfindingTest
 {
     internal class VertexT<T> : Vertex<T>
     {
@@ -41,7 +41,7 @@ namespace PathFindingTest
 
             var actualPath = GenerateResult(a, d, expectedPath);
 
-            CollectionAssert.AreEqual(expectedPath, actualPath.Reverse().ToList());
+            CollectionAssert.AreEqual(expectedPath, actualPath.ToList());
         }
 
         //TODO: correct mistakes
@@ -69,7 +69,7 @@ namespace PathFindingTest
             graph.Edges.TryGetValue(new Edge<string>() { StartNode = lviv, EndNode = tokyo, Distance = 1 }, out lt);
             var expPath = new List<IEdge<string>>() { kl, lt };
 
-            var actualPath = graph.FindShortestPath(kyiv, tokyo).Reverse().ToList();
+            var actualPath = graph.FindShortestPath(kyiv, tokyo).ToList();
             CollectionAssert.AreEqual(expPath, actualPath);
         }
 
