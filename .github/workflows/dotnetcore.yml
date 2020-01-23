@@ -1,5 +1,4 @@
-name: .NET Core
-
+name: Tests
 on: [push]
 
 jobs:
