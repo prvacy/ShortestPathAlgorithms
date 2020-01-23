@@ -1,4 +1,4 @@
-# ShortestPathAlgorithms ![](https://github.com/prvacy/ShortestPathAlgorithms/workflows/.NET%20Core/badge.svg)
+# ShortestPathAlgorithms ![](https://github.com/prvacy/ShortestPathAlgorithms/workflows/Tests/badge.svg)
 This ```.NETStandart 2.1``` library implements Dijkstra pathfinding algorithm.
 
 ## Getting Started
